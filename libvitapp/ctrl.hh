@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cstdint>
+#include "singleton.hh"
 
 namespace vitapp {
 
-class ctrl {
+class ctrl: public singleton<ctrl> {
 public:
     enum class mode {
         digital = 0,
@@ -35,16 +35,11 @@ public:
         ranalog_left  = 0x1000000,
     };
 
-private:
+protected:
     ctrl();
 
 public:
-    ~ctrl();
-
-    static inline ctrl &get() {
-        static ctrl single;
-        return single;
-    }
+    virtual ~ctrl() override;
 
     mode get_mode();
     void set_mode(mode);

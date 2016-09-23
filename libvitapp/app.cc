@@ -1,5 +1,7 @@
 #include "app.hh"
 
+#include "ctrl.hh"
+
 #include <vita2d.h>
 
 #include <psp2/apputil.h>
@@ -52,17 +54,22 @@ app::app(const std::initializer_list<module> &inits) {
     config.language = language_;
     config.enterButtonAssign = enter_button_;
     sceCommonDialogSetConfigParam(&config);
+    if (enter_button_ == SCE_SYSTEM_PARAM_ENTER_BUTTON_CIRCLE) {
+        enter_button_ = ctrl::circle;
+    } else {
+        enter_button_ = ctrl::cross;
+    }
     if (is_in(inited_modules_, module::net)) {
-        load(module::net);
+        load(module::net, false);
     }
     if (is_in(inited_modules_, module::pgf)) {
-        load(module::pgf);
+        load(module::pgf, false);
     }
     if (is_in(inited_modules_, module::promoter)) {
-        load(module::vita2d);
+        load(module::promoter, false);
     }
     if (is_in(inited_modules_, module::vita2d)) {
-        load(module::vita2d);
+        load(module::vita2d, false);
     }
 }
 

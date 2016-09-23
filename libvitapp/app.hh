@@ -1,7 +1,6 @@
 #pragma once
 
-#include <set>
-#include <utility>
+#include "os.hh"
 
 namespace vitapp {
 
@@ -15,7 +14,7 @@ public:
     };
 
 protected:
-    app(const std::initializer_list<module>& inits);
+    app(const std::initializer_list<module> &inits = {module::vita2d, module::pgf});
 
 public:
     virtual ~app();
@@ -29,6 +28,7 @@ public:
     static inline app *get() { return app_; }
     void load(module, bool check = true);
     void init_font(const char *name = nullptr);
+    inline bool is_font_inited() { return font_ != nullptr; }
     inline int language() { return language_; }
     inline int enter_button() { return enter_button_; }
 

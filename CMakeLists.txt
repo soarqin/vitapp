@@ -15,7 +15,7 @@ project(vitapp C CXX)
 if (DEFINED ENV{VITASDK})
     SET(CMAKE_INSTALL_PREFIX $ENV{VITASDK}/arm-vita-eabi CACHE PATH "" FORCE)
     MESSAGE(STATUS "Install to ${CMAKE_INSTALL_PREFIX}")
-endif()
+endif ()
 
 add_subdirectory(libpromoter)
 add_subdirectory(libvitapp)

@@ -1,18 +1,15 @@
 #pragma once
 
+#include "singleton.hh"
+
 namespace vitapp {
 
-class promoter {
-private:
+class promoter: public singleton<promoter> {
+protected:
     promoter();
 
 public:
-    ~promoter();
-
-    static inline promoter &get() {
-        static promoter single;
-        return single;
-    }
+    virtual ~promoter() override;
 
     void start(const char *path);
     void stop();

@@ -7,13 +7,13 @@
 namespace vitapp {
 
 promoter::promoter() {
+    app::get()->load(app::module::promoter);
 }
 
 promoter::~promoter() {
 }
 
 void promoter::start(const char *path) {
-    app::get()->load(app::module::promoter);
     scePromoterUtilityInit();
     scePromoterUtilityPromotePkg(const_cast<char*>(path), 0);
 }
