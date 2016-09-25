@@ -1,10 +1,20 @@
 cmake_minimum_required(VERSION 3.6)
 
+if (DEFINED ENV{VITASDK})
+    SET(CMAKE_VITASDK $ENV{VITASDK} CACHE PATH "" FORCE)
+    SET(CMAKE_VITASDK_PREFIX ${CMAKE_VITASDK}/bin/arm-vita-eabi-)
+else ()
+    MESSAGE(FATAL_ERROR "You must setup $VITASDK first!")
+endif ()
+
 SET(CMAKE_SYSTEM_NAME Generic)
-SET(CMAKE_SYSTEM_VERSION 1)
-SET(CMAKE_C_COMPILER arm-vita-eabi-gcc)
-SET(CMAKE_CXX_COMPILER arm-vita-eabi-g++)
- 
+set(CMAKE_SYSTEM_PROCESSOR arm)
+SET(CMAKE_C_COMPILER ${CMAKE_VITASDK_PREFIX}gcc)
+SET(CMAKE_CXX_COMPILER ${CMAKE_VITASDK_PREFIX}g++)
+set(CMAKE_STRIP ${CMAKE_VITASDK_PREFIX}strip CACHE FILEPATH "VitaSDK toolchain stripper" FORCE)
+set(CMAKE_LD ${CMAKE_VITASDK_PREFIX}ld CACHE FILEPATH "VitaSDK toolchain linker" FORCE)
+set(CMAKE_AR ${CMAKE_VITASDK_PREFIX}ar CACHE FILEPATH "VitaSDK toolchain archiver" FORCE)
+
 SET(COMMON_FLAGS "-g -Wl,-q -ffat-lto-objects -flto")
 SET(CMAKE_CXX_FLAGS "${COMMON_FLAGS} -std=gnu++11")
 SET(CMAKE_C_FLAGS "${COMMON_FLAGS} -std=gnu99")
@@ -12,10 +22,8 @@ SET(CMAKE_EXE_LINKER_FLAGS "-Wl,-gc-sections -ffunction-sections -ffat-lto-objec
 
 project(vitapp C CXX)
 
-if (DEFINED ENV{VITASDK})
-    SET(CMAKE_INSTALL_PREFIX $ENV{VITASDK}/arm-vita-eabi CACHE PATH "" FORCE)
-    MESSAGE(STATUS "Install to ${CMAKE_INSTALL_PREFIX}")
-endif ()
+SET(CMAKE_INSTALL_PREFIX ${CMAKE_VITASDK}/arm-vita-eabi CACHE PATH "" FORCE)
+MESSAGE(STATUS "Install to ${CMAKE_INSTALL_PREFIX}")
 
 add_subdirectory(libpromoter)
 add_subdirectory(libvitapp)
